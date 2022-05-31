@@ -2,11 +2,12 @@ namespace SpriteKind {
     export const chirp = SpriteKind.create()
     export const followchirp = SpriteKind.create()
 }
-function ChirpFollow () {
-    for (let index = 0; index <= chirpslist.length + 1; index++) {
-        chirpslist[index].follow(chirpslist[index - 1])
-    }
-}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprite, location) {
+    previouschirp = Flicky
+    chirpsleft += sprites.allOfKind(SpriteKind.followchirp).length * -1
+    info.changeScoreBy(sprites.allOfKind(SpriteKind.followchirp).length * 100)
+    sprites.destroyAllSpritesOfKind(SpriteKind.followchirp)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
         animation.stopAnimation(animation.AnimationTypes.All, Flicky)
@@ -43,7 +44,8 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSprite) {
     otherSprite.setKind(SpriteKind.followchirp)
     chirpslist.push(otherSprite)
-    ChirpFollow()
+    otherSprite.follow(previouschirp, 100)
+    previouschirp = otherSprite
 })
 function NewLevel () {
     chirpslist = []
@@ -71,19 +73,21 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, otherSprite) {
     otherSprite.setKind(SpriteKind.followchirp)
     chirpslist.push(otherSprite)
-    ChirpFollow()
+    otherSprite.follow(previouschirp, 100)
+    previouschirp = otherSprite
 })
-let chirpsleft = 0
 let Chirp: Sprite = null
-let flicky_direction = 0
 let chirpslist: Sprite[] = []
+let flicky_direction = 0
+let chirpsleft = 0
+let previouschirp: Sprite = null
 let Flicky: Sprite = null
 Flicky = sprites.create(assets.image`flicky_front`, SpriteKind.Player)
 controller.moveSprite(Flicky, 100, 0)
 tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(Flicky)
 NewLevel()
-chirpslist.push(Flicky)
+previouschirp = Flicky
 game.onUpdate(function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
         Flicky.ay = 0
