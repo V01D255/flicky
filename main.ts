@@ -17,6 +17,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprit
     sprites.destroyAllSpritesOfKind(SpriteKind.followchirp)
     if (chirpsleft < 1) {
         level += 1
+        game.splash("LEVEL CLEAR")
         NewLevel()
     }
 })
@@ -74,6 +75,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSp
     previouschirp = otherSprite
 })
 function NewLevel () {
+    info.startCountdown(300)
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
     tiles.setCurrentTilemap(levels[level])
     chirpslist = []
@@ -105,6 +107,10 @@ sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, ot
     chirpslist.push(otherSprite)
     otherSprite.follow(previouschirp, 100)
     previouschirp = otherSprite
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    pause(500)
 })
 let Chirp: Sprite = null
 let chirpslist: Sprite[] = []
