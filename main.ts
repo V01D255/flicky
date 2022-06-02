@@ -26,6 +26,7 @@ function SpawnEnemies (ID: number) {
         for (let value of tiles.getTilesByType(assets.tile`lizordspawn`)) {
             lizard = sprites.create(assets.image`lizard_placeholder`, SpriteKind.Enemy)
             tiles.placeOnTile(lizard, value)
+            lizard.vy += 1
             tiles.setTileAt(value, assets.tile`transparency16`)
         }
     } else {
@@ -131,6 +132,7 @@ info.setLife(1)
 NewLevel()
 scene.cameraFollowSprite(Flicky)
 previouschirp = Flicky
+// gravity
 game.onUpdate(function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
         Flicky.ay = 0
@@ -146,5 +148,41 @@ game.onUpdate(function () {
         cat.ay = 0
     } else {
         cat.ay += 5
+    }
+})
+// lizard behavior
+game.onUpdate(function () {
+    if (lizard.isHittingTile(CollisionDirection.Bottom)) {
+        animation.runImageAnimation(
+        lizard,
+        assets.animation`lizordleft0`,
+        50,
+        true
+        )
+        lizard.setVelocity(100, 1)
+    } else if (lizard.isHittingTile(CollisionDirection.Top)) {
+        animation.runImageAnimation(
+        lizard,
+        assets.animation`lizordleft`,
+        50,
+        true
+        )
+        lizard.setVelocity(-100, -1)
+    } else if (lizard.isHittingTile(CollisionDirection.Right)) {
+        animation.runImageAnimation(
+        lizard,
+        assets.animation`lizordleft2`,
+        50,
+        true
+        )
+        lizard.setVelocity(1, -100)
+    } else {
+        animation.runImageAnimation(
+        lizard,
+        assets.animation`lizordleft1`,
+        50,
+        true
+        )
+        lizard.setVelocity(-1, 100)
     }
 })
