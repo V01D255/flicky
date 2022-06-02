@@ -24,11 +24,6 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "score_1000"
     },
-    "image9": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREEQEAAAAAAERnRkREAAAAQERcRQAAAABARFxFAAAAAERnRkREAABERBEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "cat_enemy_front"
-    },
     "image1": {
         "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAKAKICAAAAIgRhdiNuwAAiFiF3Y0AAACIWIXdjQAAAIgRhdiNuwAAgCgCiAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
@@ -43,6 +38,16 @@
         "data": "hwQNAAQAAAD//wAA//8AABERAAD//wAAEREAAPEfAAAREQAA//8AABERAADxHwAAEREAAP//AAD//wAA",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "score_100"
+    },
+    "image10": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAdwcAAAAAAHB3BwAAAAAAcHcHAAAAAAB3dwcAAAAAAHd3BwAAAAAAd3d3AAAAAAB3d3cAAAAAcHdwBwAAAABwBwAHAAAAAHAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "lizard_placeholder"
+    },
+    "image9": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREEQEAAAAAAERnRkREAAAAQERcRQAAAABARFxFAAAAAERnRkREAABERBEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "cat_enemy_front"
     },
     "anim4": {
         "namespace": "myAnimations",

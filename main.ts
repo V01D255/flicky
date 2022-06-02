@@ -3,11 +3,37 @@ namespace SpriteKind {
     export const followchirp = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprite, location) {
+    streak = 1
     previouschirp = Flicky
-    chirpsleft += sprites.allOfKind(SpriteKind.followchirp).length * -1
-    info.changeScoreBy(sprites.allOfKind(SpriteKind.followchirp).length * 100)
+    for (let index = 0; index < sprites.allOfKind(SpriteKind.followchirp).length; index++) {
+        chirpsleft += -1
+        info.changeScoreBy(streak * 20)
+        if (streak > 10) {
+            streak = 1
+            info.changeLifeBy(1)
+        }
+        streak += 1
+    }
     sprites.destroyAllSpritesOfKind(SpriteKind.followchirp)
+    if (chirpsleft < 1) {
+        level += 1
+        NewLevel()
+    }
 })
+function SpawnEnemies (ID: number) {
+    if (ID == 1) {
+        for (let value of tiles.getTilesByType(assets.tile`lizordspawn`)) {
+            lizard = sprites.create(assets.image`lizard_placeholder`, SpriteKind.Enemy)
+            tiles.placeOnTile(lizard, value)
+            tiles.setTileAt(value, assets.tile`transparency16`)
+        }
+    } else {
+        for (let value of tiles.getTilesByType(assets.tile`enem_spawn`)) {
+            cat = sprites.create(assets.image`cat_enemy_front`, SpriteKind.Enemy)
+            tiles.placeOnTile(cat, value)
+        }
+    }
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
         animation.stopAnimation(animation.AnimationTypes.All, Flicky)
@@ -48,6 +74,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSp
     previouschirp = otherSprite
 })
 function NewLevel () {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    tiles.setCurrentTilemap(levels[level])
     chirpslist = []
     tiles.placeOnRandomTile(Flicky, assets.tile`doorsmiddle`)
     Flicky.setImage(assets.image`flicky_front`)
@@ -57,6 +85,8 @@ function NewLevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
         chirpsleft += 1
     }
+    SpawnEnemies(1)
+    SpawnEnemies(2)
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     flicky_direction = 1
@@ -79,14 +109,21 @@ sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, ot
 let Chirp: Sprite = null
 let chirpslist: Sprite[] = []
 let flicky_direction = 0
+let cat: Sprite = null
+let lizard: Sprite = null
 let chirpsleft = 0
+let streak = 0
 let previouschirp: Sprite = null
 let Flicky: Sprite = null
+let level = 0
+let levels: tiles.TileMapData[] = []
+levels = [tilemap`level1`, tilemap`level3`, tilemap`end`]
+level = 0
 Flicky = sprites.create(assets.image`flicky_front`, SpriteKind.Player)
 controller.moveSprite(Flicky, 100, 0)
-tiles.setCurrentTilemap(tilemap`level1`)
-scene.cameraFollowSprite(Flicky)
+info.setLife(1)
 NewLevel()
+scene.cameraFollowSprite(Flicky)
 previouschirp = Flicky
 game.onUpdate(function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
@@ -98,5 +135,10 @@ game.onUpdate(function () {
         Chirp.ay = 0
     } else {
         Chirp.ay += 5
+    }
+    if (cat.isHittingTile(CollisionDirection.Bottom)) {
+        cat.ay = 0
+    } else {
+        cat.ay += 5
     }
 })
