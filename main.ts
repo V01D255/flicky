@@ -43,6 +43,29 @@ function SpawnEnemies (ID: number) {
         }
     }
 }
+scene.onHitWall(SpriteKind.cat, function (sprite, location) {
+    if (tiles.tileAtLocationIsWall(location.getNeighboringLocation(CollisionDirection.Left))) {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`cat_runright`,
+        100,
+        true
+        )
+        sprite.ax = 100
+    } else if (tiles.tileAtLocationIsWall(location.getNeighboringLocation(CollisionDirection.Right))) {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`cat_runleft`,
+        100,
+        true
+        )
+        sprite.ax = -100
+    } else {
+        if (Math.percentChance(30)) {
+            sprite.ay = -200
+        }
+    }
+})
 sprites.onCreated(SpriteKind.cat, function (sprite) {
     if (Math.percentChance(50)) {
         animation.runImageAnimation(
