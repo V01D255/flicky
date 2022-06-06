@@ -43,9 +43,6 @@ function SpawnEnemies (ID: number) {
         }
     }
 }
-scene.onHitWall(SpriteKind.cat, function (sprite, location) {
-	
-})
 sprites.onCreated(SpriteKind.cat, function (sprite) {
     if (Math.percentChance(50)) {
         animation.runImageAnimation(
@@ -177,12 +174,10 @@ game.onUpdate(function () {
     } else {
         Chirp.ay += 5
     }
-    for (let value of sprites.allOfKind(SpriteKind.cat)) {
-        if (value.isHittingTile(CollisionDirection.Bottom)) {
-            value.ay = 0
-        } else {
-            value.ay += 5
-        }
+    if (cat.isHittingTile(CollisionDirection.Bottom)) {
+        cat.ay = 0
+    } else {
+        cat.ay += 5
     }
 })
 // lizard behavior
