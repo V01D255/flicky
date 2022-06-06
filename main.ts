@@ -55,11 +55,11 @@ sprites.onCreated(SpriteKind.cat, function (sprite) {
     } else {
         animation.runImageAnimation(
         sprite,
-        assets.animation`cat_runright`,
+        assets.animation`cat_runleft`,
         100,
         true
         )
-        sprite.ax = 100
+        sprite.ax = -100
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -104,6 +104,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSp
 function NewLevel () {
     info.startCountdown(300)
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    sprites.destroyAllSpritesOfKind(SpriteKind.cat)
     tiles.setCurrentTilemap(levels[level])
     chirpslist = []
     tiles.placeOnRandomTile(Flicky, assets.tile`doorsmiddle`)
@@ -174,10 +175,12 @@ game.onUpdate(function () {
     } else {
         Chirp.ay += 5
     }
-    if (cat.isHittingTile(CollisionDirection.Bottom)) {
-        cat.ay = 0
-    } else {
-        cat.ay += 5
+    for (let value of sprites.allOfKind(SpriteKind.cat)) {
+        if (value.isHittingTile(CollisionDirection.Bottom)) {
+            value.ay = 0
+        } else {
+            value.ay += 5
+        }
     }
 })
 // lizard behavior
