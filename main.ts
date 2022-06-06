@@ -7,12 +7,8 @@ enum ActionKind {
 namespace SpriteKind {
     export const chirp = SpriteKind.create()
     export const followchirp = SpriteKind.create()
+    export const cat = SpriteKind.create()
 }
-sprites.onCreated(SpriteKind.Enemy, function (sprite) {
-    if (sprite == sprites.create(assets.image`cat_enemy_front`, SpriteKind.Enemy)) {
-    	
-    }
-})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprite, location) {
     streak = 1
     previouschirp = Flicky
@@ -47,6 +43,25 @@ function SpawnEnemies (ID: number) {
         }
     }
 }
+sprites.onCreated(SpriteKind.cat, function (sprite) {
+    if (Math.percentChance(50)) {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`cat_runright`,
+        100,
+        true
+        )
+        sprite.ax = 100
+    } else {
+        animation.runImageAnimation(
+        sprite,
+        assets.animation`cat_runright`,
+        100,
+        true
+        )
+        sprite.ax = 100
+    }
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
         animation.stopAnimation(animation.AnimationTypes.All, Flicky)
