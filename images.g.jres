@@ -49,6 +49,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "lizard_placeholder"
     },
+    "image11": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAREQAAAAAAEBERAQAAAAARERERAAAAEBEREREBAAAQEREREQEAABARERERAQAAEBEREREBAAAAEREREQAAAAAQEREBAAAAAAAREQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "ball"
+    },
     "anim4": {
         "namespace": "myAnimations",
         "id": "anim4",

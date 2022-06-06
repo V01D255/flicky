@@ -16,7 +16,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprit
         chirpsleft += -1
         info.changeScoreBy(streak * 20)
         if (streak > 10) {
-            streak = 1
             info.changeLifeBy(1)
         }
         streak += 1
@@ -26,6 +25,16 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprit
         level += 1
         game.splash("LEVEL CLEAR")
         NewLevel()
+    }
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (info.score() >= 500) {
+        info.changeScoreBy(-500)
+        if (flicky_direction == 0) {
+            projectile = sprites.createProjectileFromSprite(assets.image`ball`, Flicky, -50, 0)
+        } else {
+            projectile = sprites.createProjectileFromSprite(assets.image`ball`, Flicky, 50, 0)
+        }
     }
 })
 function SpawnEnemies (ID: number) {
@@ -106,6 +115,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
+sprites.onOverlap(SpriteKind.followchirp, SpriteKind.cat, function (sprite, otherSprite) {
+    sprite.setKind(SpriteKind.chirp)
+    sprite.follow(otherSprite)
+    previouschirp = Flicky
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.cat, function (sprite, otherSprite) {
+    otherSprite.destroy(effects.confetti, 500)
+    info.changeScoreBy(200)
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     flicky_direction = 0
     if (Flicky.isHittingTile(CollisionDirection.Bottom)) {
@@ -125,6 +143,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSp
     previouschirp = otherSprite
 })
 function NewLevel () {
+    scene.setBackgroundColor(6)
     info.startCountdown(300)
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
     sprites.destroyAllSpritesOfKind(SpriteKind.cat)
@@ -169,20 +188,26 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let Chirp: Sprite = null
 let chirpslist: Sprite[] = []
-let flicky_direction = 0
 let cat: Sprite = null
 let lizard: Sprite = null
+let projectile: Sprite = null
+let flicky_direction = 0
 let chirpsleft = 0
 let streak = 0
 let previouschirp: Sprite = null
 let Flicky: Sprite = null
 let level = 0
 let levels: tiles.TileMapData[] = []
-levels = [tilemap`level1`, tilemap`level3`, tilemap`end`]
+levels = [
+tilemap`level1`,
+tilemap`level3`,
+tilemap`level10`,
+tilemap`end`
+]
 level = 0
 Flicky = sprites.create(assets.image`flicky_front`, SpriteKind.Player)
 controller.moveSprite(Flicky, 100, 0)
-info.setLife(1)
+info.setLife(3)
 NewLevel()
 scene.cameraFollowSprite(Flicky)
 previouschirp = Flicky
@@ -243,4 +268,8 @@ game.onUpdate(function () {
     } else {
         lizard.setVelocity(0, 100)
     }
+})
+game.onUpdateInterval(11000, function () {
+    cat = sprites.create(assets.image`cat_enemy_front`, SpriteKind.cat)
+    tiles.placeOnRandomTile(cat, assets.tile`enem_spawn`)
 })
