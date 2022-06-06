@@ -1,7 +1,18 @@
+enum ActionKind {
+    Walking,
+    Idle,
+    Jumping,
+    walkleft
+}
 namespace SpriteKind {
     export const chirp = SpriteKind.create()
     export const followchirp = SpriteKind.create()
 }
+sprites.onCreated(SpriteKind.Enemy, function (sprite) {
+    if (sprite == sprites.create(assets.image`cat_enemy_front`, SpriteKind.Enemy)) {
+    	
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprite, location) {
     streak = 1
     previouschirp = Flicky
@@ -152,15 +163,7 @@ game.onUpdate(function () {
 })
 // lizard behavior
 game.onUpdate(function () {
-    if (lizard.isHittingTile(CollisionDirection.Bottom)) {
-        animation.runImageAnimation(
-        lizard,
-        assets.animation`lizordleft0`,
-        50,
-        true
-        )
-        lizard.setVelocity(100, 1)
-    } else if (lizard.isHittingTile(CollisionDirection.Top)) {
+    if (lizard.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`) && (lizard.tileKindAt(TileDirection.Top, assets.tile`myTile1`) || (lizard.tileKindAt(TileDirection.Top, assets.tile`myTile0`) || lizard.tileKindAt(TileDirection.Top, assets.tile`myTile`)))) {
         animation.runImageAnimation(
         lizard,
         assets.animation`lizordleft`,
@@ -168,7 +171,15 @@ game.onUpdate(function () {
         true
         )
         lizard.setVelocity(-100, -1)
-    } else if (lizard.isHittingTile(CollisionDirection.Right)) {
+    } else if (lizard.tileKindAt(TileDirection.Bottom, assets.tile`myTile1`) || (lizard.tileKindAt(TileDirection.Bottom, assets.tile`myTile0`) || lizard.tileKindAt(TileDirection.Bottom, assets.tile`myTile`))) {
+        animation.runImageAnimation(
+        lizard,
+        assets.animation`lizordleft0`,
+        50,
+        true
+        )
+        lizard.setVelocity(100, 1)
+    } else if (lizard.tileKindAt(TileDirection.Right, assets.tile`myTile`)) {
         animation.runImageAnimation(
         lizard,
         assets.animation`lizordleft2`,
@@ -176,7 +187,7 @@ game.onUpdate(function () {
         true
         )
         lizard.setVelocity(1, -100)
-    } else {
+    } else if (lizard.tileKindAt(TileDirection.Left, assets.tile`myTile1`) || lizard.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
         animation.runImageAnimation(
         lizard,
         assets.animation`lizordleft1`,
@@ -184,5 +195,7 @@ game.onUpdate(function () {
         true
         )
         lizard.setVelocity(-1, 100)
+    } else {
+        lizard.setVelocity(0, 100)
     }
 })
