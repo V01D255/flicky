@@ -38,11 +38,14 @@ function SpawnEnemies (ID: number) {
         }
     } else {
         for (let value of tiles.getTilesByType(assets.tile`enem_spawn`)) {
-            cat = sprites.create(assets.image`cat_enemy_front`, SpriteKind.Enemy)
+            cat = sprites.create(assets.image`cat_enemy_front`, SpriteKind.cat)
             tiles.placeOnTile(cat, value)
         }
     }
 }
+scene.onHitWall(SpriteKind.cat, function (sprite, location) {
+	
+})
 sprites.onCreated(SpriteKind.cat, function (sprite) {
     if (Math.percentChance(50)) {
         animation.runImageAnimation(
@@ -129,6 +132,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         )
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.cat, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    pause(500)
+})
 sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, otherSprite) {
     otherSprite.setKind(SpriteKind.followchirp)
     chirpslist.push(otherSprite)
@@ -170,10 +177,12 @@ game.onUpdate(function () {
     } else {
         Chirp.ay += 5
     }
-    if (cat.isHittingTile(CollisionDirection.Bottom)) {
-        cat.ay = 0
-    } else {
-        cat.ay += 5
+    for (let value of sprites.allOfKind(SpriteKind.cat)) {
+        if (value.isHittingTile(CollisionDirection.Bottom)) {
+            value.ay = 0
+        } else {
+            value.ay += 5
+        }
     }
 })
 // lizard behavior
