@@ -24,6 +24,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doorsmiddle`, function (sprit
     if (chirpsleft < 1) {
         level += 1
         game.splash("LEVEL CLEAR")
+        if (flawless) {
+            game.splash("FLAWLESS VICTORY!")
+            info.changeScoreBy(info.score())
+            info.changeLifeBy(4)
+        }
         NewLevel()
     }
 })
@@ -116,6 +121,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 sprites.onOverlap(SpriteKind.followchirp, SpriteKind.cat, function (sprite, otherSprite) {
+    flawless = false
     sprite.setKind(SpriteKind.chirp)
     sprite.follow(otherSprite)
     previouschirp = Flicky
@@ -145,6 +151,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.chirp, function (sprite, otherSp
 function NewLevel () {
     scene.setBackgroundColor(6)
     info.startCountdown(300)
+    flawless = true
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
     sprites.destroyAllSpritesOfKind(SpriteKind.cat)
     tiles.setCurrentTilemap(levels[level])
@@ -174,6 +181,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.cat, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
+    flawless = false
     pause(500)
 })
 sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, otherSprite) {
@@ -183,6 +191,7 @@ sprites.onOverlap(SpriteKind.followchirp, SpriteKind.chirp, function (sprite, ot
     previouschirp = otherSprite
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    flawless = false
     info.changeLifeBy(-1)
     pause(500)
 })
@@ -192,6 +201,7 @@ let cat: Sprite = null
 let lizard: Sprite = null
 let projectile: Sprite = null
 let flicky_direction = 0
+let flawless = false
 let chirpsleft = 0
 let streak = 0
 let previouschirp: Sprite = null
@@ -201,6 +211,7 @@ let levels: tiles.TileMapData[] = []
 levels = [
 tilemap`level1`,
 tilemap`level3`,
+tilemap`level12`,
 tilemap`level10`,
 tilemap`end`
 ]
